@@ -1,35 +1,36 @@
 #!/bin/bash
+# Copyright 2021 Marc-Antoine Ruel. All rights reserved.
+# Use of this source code is governed under the Apache License, Version 2.0
+# that can be found in the LICENSE file.
 
 set -eu
 
-# sudo apt install gcc python3-virtualenv
+# sudo apt install gcc
 
-echo "Checking for nvidia hardware"
-lspci | grep -i nvidia
+if ! lspci | grep -i nvidia > /dev/null; then
+  echo "No nvidia card found"
+  exit 1
+fi
 
+if [ ! -f bin/activate ]; then
+  echo "Setting up virtualenv"
+  python3 -m venv .
+fi
 
-virtualenv --quiet .
 source bin/activate
+
 # From:
-#   pip install tensorflow
+#   pip install tensorflow Pillow pydub
 #   pip freeze > requirements.txt
-pip install -r requirements.txt
+pip install -q -r requirements.txt
 
 
-# Cuda:
-# Visit
-# https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&target_distro=Ubuntu&target_version=2004
+if [ ! -d /usr/local/cuda/lib64/ ]; then
+  echo "Visit https://gist.github.com/maruel/e99622298891cc856044e8c158a83fdd"
+  exit 1
+fi
 
-# wget https://developer.download.nvidia.com/compute/cuda/11.1.0/local_installers/cuda_11.1.0_455.23.05_linux.run
-# mkdir drv
-# sh cuda_11.1.0_455.23.05_linux.run --extract=drv
-# sudo sh cuda_11.1.0_455.23.05_linux.run
-
-# https://www.tensorflow.org/install/gpu#software_requirements
-# https://developer.nvidia.com/rdp/cudnn-download
-# https://developer.nvidia.com/rdp/cudnn-archive
-# select 7.6.5 for Linux
-# tar xvf ...
-# sudo mv cuda/ /usr/local/cudnn
-# sudo ldconfig /usr/local/cuda/lib64
-# sudo ldconfig /usr/local/cudnn/lib64
+if [ ! -f /usr/lib/x86_64-linux-gnu/libcudnn.so ]; then
+  echo "Visit https://gist.github.com/maruel/e99622298891cc856044e8c158a83fdd"
+  exit 1
+fi

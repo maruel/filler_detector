@@ -1,2 +1,7 @@
+/*.ogg
 /bin
 /lib
+/lib64
+/out
+/pyvenv.cfg
+/share

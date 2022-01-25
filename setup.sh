@@ -20,9 +20,9 @@ fi
 source bin/activate
 
 # From:
-#   pip install tensorflow Pillow pydub
-#   pip freeze > requirements.txt
-pip install -q -r requirements.txt
+#   pip3 install tensorflow Pillow pydub
+#   pip3 freeze > requirements.txt
+pip3 install -q -r requirements.txt
 
 
 if [ ! -d /usr/local/cuda/lib64/ ]; then

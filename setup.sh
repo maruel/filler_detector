@@ -14,13 +14,16 @@ fi
 
 if [ ! -f bin/activate ]; then
   echo "Setting up virtualenv"
-  python3 -m venv .
+  #python3 -m venv .
+  virtualenv .
 fi
 
 source bin/activate
 
+pip3 install --upgrade pip
+
 # From:
-#   pip3 install tensorflow Pillow pydub
+#   pip3 install --upgrade tensorflow Pillow pydub
 #   pip3 freeze > requirements.txt
 pip3 install -q -r requirements.txt
 
